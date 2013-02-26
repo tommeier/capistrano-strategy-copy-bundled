@@ -76,7 +76,8 @@ module Capistrano
         def copy_bundled_cache!
           execute "copying additional bundled cache to deployment staging area #{destination}" do
             ['.bundle', 'vendor/cache', 'bin'].each do |bundle_dir|
-              copy_directory(bundle_dir) if File.exists?(File.join(copy_cache, bundle_dir))
+              next unless File.exists?(File.join(copy_cache, bundle_dir))
+              Dir.chdir(copy_cache) { copy_files(bundle_dir) }
             end
           end
         end
