@@ -78,7 +78,7 @@ module Capistrano
             ['.bundle', 'vendor/cache', 'bin'].each do |bundle_dir|
               next unless File.exists?(File.join(copy_cache, bundle_dir))
               logger.info "copying cached directory for -> '#{bundle_dir}'"
-              Dir.chdir(copy_cache) { copy_files(bundle_dir) }
+              Dir.chdir(copy_cache) { copy_directory(bundle_dir) }
             end
           end
         end
