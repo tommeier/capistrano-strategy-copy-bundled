@@ -75,7 +75,9 @@ module Capistrano
 
         def copy_bundled_cache!
           execute "copying additional bundled cache to deployment staging area #{destination}" do
-            Dir.chdir(copy_cache) { copy_directory('vendor/cache') }
+            ['.bundle', 'vendor/cache'].each do |bundle_dir|
+              copy_directory(File.join(copy_cache, bundle_dir))
+            end
           end
         end
       end
