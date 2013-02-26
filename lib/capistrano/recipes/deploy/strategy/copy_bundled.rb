@@ -63,9 +63,6 @@ module Capistrano
           Bundler.with_clean_env do
             logger.info "bundling gems to directory : #{bundle_cache_dir}..."
             run_locally "cd #{bundle_cache_dir} && #{bundle_cmd} install #{args.join(' ').strip}"
-
-            logger.info "packaging gems for bundler in #{bundle_cache_dir}..."
-            run_locally "cd #{bundle_cache_dir} && #{bundle_cmd} package --all"
           end
 
           copy_bundled_cache! if with_cache
@@ -75,7 +72,7 @@ module Capistrano
 
         def copy_bundled_cache!
           execute "copying additional bundled cache to deployment staging area #{destination}" do
-            ['.bundle', 'bin', 'vendor/bundle', 'vendor/cache'].each do |bundle_dir|
+            ['.bundle', 'bin', 'vendor/bundle'].each do |bundle_dir|
               next unless File.exists?(File.join(copy_cache, bundle_dir))
               logger.info "copying cached directory for -> '#{bundle_dir}'"
               Dir.chdir(copy_cache) { copy_directory(bundle_dir) }
